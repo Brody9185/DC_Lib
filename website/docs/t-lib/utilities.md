@@ -1,14 +1,14 @@
 # Utilities API
 
-T_Lib provides comprehensive utility functions and constants to simplify robotics programming. This includes wheel size constants, convenient aliases for PROS enums, unit conversion helpers, and type-safe percentage operations.
+DC_Lib provides comprehensive utility functions and constants to simplify robotics programming. This includes wheel size constants, convenient aliases for PROS enums, unit conversion helpers, and type-safe percentage operations.
 
 ## Wheel Sizes
 
-T_Lib includes accurate measured diameter constants for common VEX wheels. These values are in inches and can be used for odometry calculations and distance conversions.
+DC_Lib includes accurate measured diameter constants for common VEX wheels. These values are in inches and can be used for odometry calculations and distance conversions.
 
 ### 4-inch Wheels
 ```cpp
-using namespace T_Lib::util::Wheel_Size;
+using namespace DC_Lib::util::Wheel_Size;
 
 double diameter = Omni_4in;       // 4.20070012 inches
 diameter = Trac_4in;              // 4.000 inches
@@ -38,11 +38,11 @@ double diameter = Trac_Flex_1625in;  // 1.625 inches
 
 ### Example: Odometry Calculation
 ```cpp
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 double calculateDistance(int encoder_counts) {
     // Using a 4" diameter wheel
-    double wheel_diameter = T_Lib::util::Wheel_Size::Trac_4in;
+    double wheel_diameter = DC_Lib::util::Wheel_Size::Trac_4in;
     double circumference = M_PI * wheel_diameter;
     
     // Assuming 360 counts per revolution
@@ -58,7 +58,7 @@ Convenient abbreviated names for common PROS enumerations.
 
 ### Motor Gearsets
 ```cpp
-using namespace T_Lib::util::Aliases;
+using namespace DC_Lib::util::Aliases;
 
 pros::v5::MotorGears gearset = Blue;    // 600 RPM
 gearset = Green;                         // 200 RPM
@@ -81,10 +81,10 @@ units = Rotations;                              // Full rotations
 
 ### Example
 ```cpp
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
-T_Lib::T_Motor motor(1, T_Lib::util::Aliases::Green);  // 200 RPM gearset
-motor.setBrakeMode(T_Lib::util::Aliases::Hold);
+DC_Lib::DC_Motor motor(1, DC_Lib::util::Aliases::Green);  // 200 RPM gearset
+motor.setBrakeMode(DC_Lib::util::Aliases::Hold);
 ```
 
 ## Unit Conversion
@@ -95,13 +95,13 @@ Helper functions for converting between common units.
 
 #### inches_to_mm
 ```cpp
-double mm = T_Lib::util::unitConversion::inches_to_mm(4.0);
+double mm = DC_Lib::util::unitConversion::inches_to_mm(4.0);
 // mm = 101.6
 ```
 
 #### mm_to_inches
 ```cpp
-double inches = T_Lib::util::unitConversion::mm_to_inches(101.6);
+double inches = DC_Lib::util::unitConversion::mm_to_inches(101.6);
 // inches = 4.0
 ```
 
@@ -109,26 +109,26 @@ double inches = T_Lib::util::unitConversion::mm_to_inches(101.6);
 
 #### degrees_to_radians
 ```cpp
-double radians = T_Lib::util::unitConversion::degrees_to_radians(180.0);
+double radians = DC_Lib::util::unitConversion::degrees_to_radians(180.0);
 // radians ≈ 3.14159 (π)
 ```
 
 #### radians_to_degrees
 ```cpp
-double degrees = T_Lib::util::unitConversion::radians_to_degrees(M_PI);
+double degrees = DC_Lib::util::unitConversion::radians_to_degrees(M_PI);
 // degrees = 180.0
 ```
 
 ### Example: Odometry with Unit Conversion
 ```cpp
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 struct Pose2D {
     double x_mm, y_mm, theta_rad;
 };
 
 Pose2D calculatePose(int left_counts, int right_counts, int imu_angle) {
-    using namespace T_Lib::util;
+    using namespace DC_Lib::util;
     
     // Calculate distance traveled
     double wheel_diameter = Wheel_Size::Trac_4in;
@@ -150,7 +150,7 @@ Pose2D calculatePose(int left_counts, int right_counts, int imu_angle) {
 
 ## Percentage Type
 
-T_Lib provides a type-safe `Percentage` class with custom literal operators for safely handling percentage values.
+DC_Lib provides a type-safe `Percentage` class with custom literal operators for safely handling percentage values.
 
 ### Percentage Class
 ```cpp
@@ -175,7 +175,7 @@ struct Percentage {
 Use the `_perc` suffix to create percentage values concisely:
 
 ```cpp
-using T_Lib::util::units::percentage_literals::operator"" _perc;
+using DC_Lib::util::units::percentage_literals::operator"" _perc;
 
 // Create percentages using custom literals
 auto perc1 = 50_perc;        // 50%
@@ -186,7 +186,7 @@ auto perc4 = 150_perc;       // Clamped to 100%
 
 ### Operations
 ```cpp
-using namespace T_Lib::util::units::percentage_literals;
+using namespace DC_Lib::util::units::percentage_literals;
 
 auto perc1 = 30_perc;
 auto perc2 = 20_perc;
@@ -205,12 +205,12 @@ double result = (75_perc).applyTo(base_voltage);  // 9000 mV
 
 ### Example: Motor Control with Percentages
 ```cpp
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 void motorDemo() {
-    using namespace T_Lib::util::units::percentage_literals;
+    using namespace DC_Lib::util::units::percentage_literals;
     
-    T_Lib::T_Motor motor(1);
+    DC_Lib::DC_Motor motor(1);
     
     // Set power using percentage literals
     motor.setTargetPercent(75_perc);    // 75% power
@@ -223,7 +223,7 @@ void motorDemo() {
 
 ## Mathematical Constants
 
-T_Lib defines the mathematical constant π:
+DC_Lib defines the mathematical constant π:
 
 ```cpp
 #ifndef M_PI
@@ -242,12 +242,12 @@ double circumference = M_PI * wheel_diameter;  // π × d
 
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 #include <cmath>
 
 class OdometryCalculator {
 private:
-    using namespace T_Lib::util;
+    using namespace DC_Lib::util;
     
     double wheel_diameter_inches;
     double counts_per_rotation;
@@ -291,7 +291,7 @@ public:
 
 void autonomous() {
     OdometryCalculator odom;
-    T_Lib::T_Motor left_enc(1), right_enc(2);
+    DC_Lib::DC_Motor left_enc(1), right_enc(2);
     
     printf("Initial: X=%.2f, Y=%.2f, Theta=%.2f\n", 0.0, 0.0, 0.0);
     

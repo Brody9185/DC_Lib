@@ -1,16 +1,16 @@
 # Common Patterns & Examples
 
-This guide covers common use cases and best practices for working with T_Lib in real robot code.
+This guide covers common use cases and best practices for working with DC_Lib in real robot code.
 
 ## Basic Motor Control
 
 ### Simple Single Motor
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 void opcontrol() {
-    T_Lib::T_Motor motor(1);
+    DC_Lib::DC_Motor motor(1);
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     
     while (true) {
@@ -28,11 +28,11 @@ void opcontrol() {
 ### Motor with Configuration
 ```cpp
 void opcontrol() {
-    T_Lib::T_Motor motor(1, T_Lib::util::Aliases::Blue);
+    DC_Lib::DC_Motor motor(1, DC_Lib::util::Aliases::Blue);
     
     // Configure motor behavior
     motor.setDualConstants(0.05, 0.1, 0.05, 0.05);
-    motor.setBrakeMode(T_Lib::util::Aliases::Hold);
+    motor.setBrakeMode(DC_Lib::util::Aliases::Hold);
     motor.setLoadCompensation(true, 5.0, 15);
     motor.setMinTorque(true, 1200, 600);
     
@@ -58,17 +58,17 @@ void opcontrol() {
 ### Tank Drive with Motor Groups
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 void opcontrol() {
     // Create motor groups for left and right sides
-    T_MotorGroup left_motors({1, 2, 3});
-    T_MotorGroup right_motors({4, 5, 6});
+    DC_MotorGroup left_motors({1, 2, 3});
+    DC_MotorGroup right_motors({4, 5, 6});
     
     // Configure both sides identically
     for (auto* group : {&left_motors, &right_motors}) {
         group->setDualConstants(0.05, 0.1, 0.05, 0.05);
-        group->setBrakeMode(T_Lib::util::Aliases::Hold);
+        group->setBrakeMode(DC_Lib::util::Aliases::Hold);
         group->setLoadCompensation(true, 5.0);
         group->setMinTorque(true, 1200, 600);
     }
@@ -91,14 +91,14 @@ void opcontrol() {
 ### Tank Drive with Slow Mode
 ```cpp
 void opcontrol() {
-    T_MotorGroup left_motors({1, 2, 3});
-    T_MotorGroup right_motors({4, 5, 6});
+    DC_MotorGroup left_motors({1, 2, 3});
+    DC_MotorGroup right_motors({4, 5, 6});
     
     // Configure groups
     left_motors.setDualConstants(0.05, 0.1, 0.05, 0.05);
     right_motors.setDualConstants(0.05, 0.1, 0.05, 0.05);
-    left_motors.setBrakeMode(T_Lib::util::Aliases::Hold);
-    right_motors.setBrakeMode(T_Lib::util::Aliases::Hold);
+    left_motors.setBrakeMode(DC_Lib::util::Aliases::Hold);
+    right_motors.setBrakeMode(DC_Lib::util::Aliases::Hold);
     
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     bool slow_mode = false;
@@ -132,20 +132,20 @@ void opcontrol() {
 ### Motor Subsystem Class
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 class IntakeSystem {
 private:
-    T_Lib::T_Motor intake_motor;
+    DC_Lib::DC_Motor intake_motor;
     bool running = false;
     
 public:
     IntakeSystem(int port) 
-        : intake_motor(port, T_Lib::util::Aliases::Green) {
+        : intake_motor(port, DC_Lib::util::Aliases::Green) {
         // Configure motor
         intake_motor.setDualConstants(0.05, 0.1, 0.05, 0.05);
         intake_motor.setLoadeCompensation(true);
-        intake_motor.setBrakeMode(T_Lib::util::Aliases::Coast);
+        intake_motor.setBrakeMode(DC_Lib::util::Aliases::Coast);
     }
     
     void start() {
@@ -170,8 +170,8 @@ public:
 
 class Drivetrain {
 private:
-    T_MotorGroup left_motors;
-    T_MotorGroup right_motors;
+    DC_MotorGroup left_motors;
+    DC_MotorGroup right_motors;
     
 public:
     Drivetrain(const std::vector<int>& left_ports, 
@@ -182,8 +182,8 @@ public:
         left_motors.setDualConstants(0.05, 0.1, 0.05, 0.05);
         right_motors.setDualConstants(0.05, 0.1, 0.05, 0.05);
         
-        left_motors.setBrakeMode(T_Lib::util::Aliases::Hold);
-        right_motors.setBrakeMode(T_Lib::util::Aliases::Hold);
+        left_motors.setBrakeMode(DC_Lib::util::Aliases::Hold);
+        right_motors.setBrakeMode(DC_Lib::util::Aliases::Hold);
     }
     
     void arcadeDrive(double forward, double turn) {
@@ -238,7 +238,7 @@ void opcontrol() {
 ### PID Tuning with Live Adjustment
 ```cpp
 void tuneMotorPID() {
-    T_Lib::T_Motor motor(1);
+    DC_Lib::DC_Motor motor(1);
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     
     double kv = 0.05;
@@ -275,11 +275,11 @@ void tuneMotorPID() {
 ### Load Detection and Response
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 class LoadSensitiveMotor {
 private:
-    T_Lib::T_Motor motor;
+    DC_Lib::DC_Motor motor;
     bool overloaded = false;
     
 public:
@@ -336,8 +336,8 @@ void opcontrol() {
 ### Time-Based Movement
 ```cpp
 void autonomous() {
-    T_MotorGroup left({1, 2, 3});
-    T_MotorGroup right({4, 5, 6});
+    DC_MotorGroup left({1, 2, 3});
+    DC_MotorGroup right({4, 5, 6});
     
     left.setDualConstants(0.05, 0.1, 0.05, 0.05);
     right.setDualConstants(0.05, 0.1, 0.05, 0.05);
@@ -360,9 +360,9 @@ void autonomous() {
 
 ### Encoder-Based Movement
 ```cpp
-void driveDistance(T_MotorGroup& left, T_MotorGroup& right, 
+void driveDistance(DC_MotorGroup& left, DC_MotorGroup& right, 
                     double distance_inches, double power_percent) {
-    using namespace T_Lib::util;
+    using namespace DC_Lib::util;
     
     // Reset encoders
     left.resetPositions();
@@ -393,8 +393,8 @@ void driveDistance(T_MotorGroup& left, T_MotorGroup& right,
 }
 
 void autonomous() {
-    T_MotorGroup left({1, 2, 3});
-    T_MotorGroup right({4, 5, 6});
+    DC_MotorGroup left({1, 2, 3});
+    DC_MotorGroup right({4, 5, 6});
     
     left.setDualConstants(0.05, 0.1, 0.05, 0.05);
     right.setDualConstants(0.05, 0.1, 0.05, 0.05);
@@ -421,7 +421,7 @@ void autonomous() {
     printf("\n"); \
 } while(0)
 
-void debugMotor(T_Lib::T_Motor& motor, const char* name) {
+void debugMotor(DC_Lib::DC_Motor& motor, const char* name) {
     DEBUG_PRINT("%s - RPM: %.1f | Temp: %.1f°C | Voltage: %d mV",
                 name, motor.getRPM(), motor.getTemperature(), motor.getVoltage());
 }
@@ -429,7 +429,7 @@ void debugMotor(T_Lib::T_Motor& motor, const char* name) {
 
 ### Monitoring Multiple Motors
 ```cpp
-void monitorDrivetrain(T_MotorGroup& left, T_MotorGroup& right) {
+void monitorDrivetrain(DC_MotorGroup& left, DC_MotorGroup& right) {
     printf("LEFT MOTORS:\n");
     for (size_t i = 0; i < left.getMotors().size(); ++i) {
         auto& motor = left.getMotors()[i];

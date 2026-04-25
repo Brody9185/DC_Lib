@@ -3,15 +3,15 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'T_Lib Docs',
-  tagline: 'Hasta la vista, Baby',
+  title: 'DC_Lib Docs',
+  tagline: 'Do not be sorry. Be better.',
   favicon: 'img/favicon.ico',
 
   url: 'https://Brody9185.github.io',
-  baseUrl: '/T_Lib/',
+  baseUrl: '/DC_Lib/',
 
   organizationName: 'Brody9185', 
-  projectName: 'T_Lib', 
+  projectName: 'DC_Lib', 
   deploymentBranch: 'gh-pages', // Added this for clarity
   trailingSlash: false,         // Recommended for GitHub Pages
 
@@ -30,11 +30,11 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           // Points to your actual repo so "Edit this page" works
-          editUrl: 'https://github.com/Brody9185/T_Lib/tree/main/website/',
+          editUrl: 'https://github.com/Brody9185/DC_Lib/tree/main/website/',
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/Brody9185/T_Lib/tree/main/website/',
+          editUrl: 'https://github.com/Brody9185/DC_Lib/tree/main/website/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -49,9 +49,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'T_Lib',
+      title: 'DC_Lib',
       logo: {
-        alt: 'T_Lib Logo',
+        alt: 'DC_Lib Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -63,7 +63,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/Brody9185/T_Lib',
+          href: 'https://github.com/Brody9185/DC_Lib',
           label: 'GitHub',
           position: 'right',
         },
@@ -86,7 +86,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Issues',
-              href: 'https://github.com/Brody9185/T_Lib/issues',
+                href: 'https://github.com/Brody9185/DC_Lib/issues',
             },
           ],
         },
@@ -99,7 +99,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/Brody9185/T_Lib',
+              href: 'https://github.com/Brody9185/DC_Lib',
             },
           ],
         },

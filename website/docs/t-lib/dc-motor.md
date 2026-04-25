@@ -1,28 +1,25 @@
-# T_Motor API
+# DC_Motor API
 
-The `T_Motor` class provides advanced control over a single V5 motor with features including real-time PID control, slew limiting, load compensation, and anti-stall protection. All control operations are non-blocking, running in a background task.
+The `DC_Motor` class provides advanced control over a single V5 motor with features including real-time PID control, slew limiting, load compensation, and anti-stall protection. All control operations are non-blocking, running in a background task.
 
 ## Constructor
 
 ```cpp
-T_Motor(int port, pros::v5::MotorGears gearset = util::Aliases::Blue, bool reversed = false);
+DC_Motor(int port, pros::v5::MotorGears gearset = util::Aliases::Blue, bool reversed = false);
 ```
 
 ### Parameters
 - `port`: Motor port number (1-21)
 - `gearset`: Motor gearset (Blue, Green, or Red) - defaults to Blue (600 RPM)
-  - `util::Aliases::Blue`: 600 RPM gearset
-  - `util::Aliases::Green`: 200 RPM gearset
-  - `util::Aliases::Red`: 100 RPM gearset
 - `reversed`: Whether the motor direction is reversed (default: false)
 
 ### Example
 ```cpp
 // Blue gear motor on port 3
-T_Lib::T_Motor motor(3);
+DC_Lib::DC_Motor motor(3);
 
 // Red gear motor on port 5, reversed direction
-T_Lib::T_Motor motor2(5, T_Lib::util::Aliases::Red, true);
+DC_Lib::DC_Motor motor2(5, DC_Lib::util::Aliases::Red, true);
 ```
 
 ## Control Commands
@@ -39,7 +36,7 @@ Sets the target power as a percentage (0-100%).
 
 ```cpp
 void setTargetPercent(double percent);
-void setTargetPercent(T_Lib::util::units::Percentage percent);
+void setTargetPercent(DC_Lib::util::units::Percentage percent);
 ```
 
 ### stop
@@ -59,7 +56,7 @@ motor.stop();               // Stop the motor
 ## PID Control
 
 ### Overview
-T_Motor uses a dual-speed PID controller to manage motor speed smoothly and accurately. The "low" speed constants control behavior at lower speeds, while "high" speed constants take over at higher speeds.
+DC_Motor uses a dual-speed PID controller to manage motor speed smoothly and accurately. The "low" speed constants control behavior at lower speeds, while "high" speed constants take over at higher speeds.
 
 ### setPIDEnabled
 Enable or disable PID control.
@@ -74,13 +71,13 @@ Set separate PID constants for low and high speed regimes.
 
 ```cpp
 void setDualConstants(
-    double kvLow, double kpLow, 
-    double kvHigh, double kpHigh
+	double kvLow, double kpLow, 
+	double kvHigh, double kpHigh
 );
 
 void setDualConstants(
-    double kvLow, double kpLow, double kiLow, double kdLow,
-    double kvHigh, double kpHigh, double kiHigh, double kdHigh
+	double kvLow, double kpLow, double kiLow, double kdLow,
+	double kvHigh, double kpHigh, double kiHigh, double kdHigh
 );
 ```
 
@@ -120,19 +117,19 @@ double getStartI() const;
 ```cpp
 // Set simple proportional constants for low and high speeds
 motor.setDualConstants(
-    0.05, 0.1,    // Low speed: kv, kp
-    0.05, 0.05    // High speed: kv, kp
+	0.05, 0.1,    // Low speed: kv, kp
+	0.05, 0.05    // High speed: kv, kp
 );
 
 // Set full PID constants with integral and derivative terms
 motor.setDualConstants(
-    0.05, 0.1, 0.001, 0.05,    // Low speed: kv, kp, ki, kd
-    0.05, 0.05, 0.0, 0.02       // High speed: kv, kp, ki, kd
+	0.05, 0.1, 0.001, 0.05,    // Low speed: kv, kp, ki, kd
+	0.05, 0.05, 0.0, 0.02       // High speed: kv, kp, ki, kd
 );
 
 // Check if PID is enabled
 if (motor.isPIDEnabled()) {
-    // PID is active
+	// PID is active
 }
 ```
 
@@ -259,10 +256,10 @@ bool isSpinningRaw() const;       // True if motor encoder is moving
 ### Example
 ```cpp
 printf("RPM: %f, Temp: %f C, Voltage: %d mV\n", 
-       motor.getRPM(), motor.getTemperature(), motor.getVoltage());
+	   motor.getRPM(), motor.getTemperature(), motor.getVoltage());
 
 if (motor.isSpinning()) {
-    printf("Motor is at target speed\n");
+	printf("Motor is at target speed\n");
 }
 ```
 
@@ -300,7 +297,7 @@ pros::v5::MotorGears getGearset() const;
 ### Example
 ```cpp
 motor.setReversed(true);                          // Reverse direction
-motor.setBrakeMode(T_Lib::util::Aliases::Hold);  // Hold position on stop
+motor.setBrakeMode(DC_Lib::util::Aliases::Hold);  // Hold position on stop
 motor.resetPosition();                            // Zero the encoder
 ```
 
@@ -308,30 +305,34 @@ motor.resetPosition();                            // Zero the encoder
 
 ```cpp
 #include "main.h"
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 
 void opcontrol() {
-    T_Lib::T_Motor motor(1, T_Lib::util::Aliases::Blue);
+	DC_Lib::DC_Motor motor(1, DC_Lib::util::Aliases::Blue);
     
-    // Configure PID and control
-    motor.setDualConstants(0.05, 0.1, 0.05, 0.05);
-    motor.setSlewLimitEnabled(true);
-    motor.setSlewRate(300.0);
-    motor.setLoadCompensation(true, 5.0, 15);
-    motor.setMinTorque(true, 1200, 600);
-    motor.setBrakeMode(T_Lib::util::Aliases::Hold);
+	// Configure PID and control
+	motor.setDualConstants(0.05, 0.1, 0.05, 0.05);
+	motor.setSlewLimitEnabled(true);
+	motor.setSlewRate(300.0);
+	motor.setLoadCompensation(true, 5.0, 15);
+	motor.setMinTorque(true, 1200, 600);
+	motor.setBrakeMode(DC_Lib::util::Aliases::Hold);
     
-    pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
     
-    while (true) {
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-            motor.setTargetRPM(600);
-        } else {
-            motor.stop();
-        }
+	while (true) {
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+			motor.setTargetRPM(600);
+		} else {
+			motor.stop();
+		}
         
-        printf("RPM: %f, Temp: %f\n", motor.getRPM(), motor.getTemperature());
-        pros::delay(20);
-    }
+		printf("RPM: %f, Temp: %f\n", motor.getRPM(), motor.getTemperature());
+		pros::delay(20);
+	}
 }
 ```
+double getTargetRPM() const;      // Target RPM setpoint
+double getPosition() const;       // Current encoder position
+int getVoltageLimit() const;      // Global voltage limit in mV
+*** End Patch

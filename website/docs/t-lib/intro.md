@@ -1,10 +1,10 @@
-# T_Lib Documentation
+# DC_Lib Documentation
 
-Welcome to the official documentation for **T_Lib**, a comprehensive C++ robotics library built for VEX Competitions on the PROS kernel.
+Welcome to the official documentation for **DC_Lib**, a comprehensive C++ robotics library built for VEX Competitions on the PROS kernel.
 
-## What is T_Lib?
+## What is DC_Lib?
 
-T_Lib is a custom library that abstracts complex motor control logic and provides an elegant, production-ready API for controlling VEX V5 motors. Whether you're building a simple robot or a complex competition bot, T_Lib streamlines motor management and provides powerful features out of the box.
+DC_Lib is a custom library that abstracts complex motor control logic and provides an elegant, production-ready API for controlling VEX V5 motors. Whether you're building a simple robot or a complex competition bot, DC_Lib streamlines motor management and provides powerful features out of the box.
 
 ## Key Features
 
@@ -29,26 +29,26 @@ T_Lib is a custom library that abstracts complex motor control logic and provide
 ## Library Structure
 
 ```
-T_Lib/
+DC_Lib/
 ├── api.hpp                  # Central include file
-├── Motor.hpp                # T_Motor class
-├── Motor_Group.hpp          # T_MotorGroup class
+├── Motor.hpp                # DC_Motor class
+├── Motor_Group.hpp          # DC_MotorGroup class
 └── util.hpp                 # Utilities, constants, helpers
 ```
 
 ## Quick Start
 
-### Include T_Lib
+### Include DC_Lib
 
 ```cpp
-#include "T_Lib/api.hpp"
+#include "DC_Lib/api.hpp"
 ```
 
 ### Create and Control a Motor
 
 ```cpp
 // Create a blue gear motor on port 3
-T_Lib::T_Motor motor(3);
+DC_Lib::DC_Motor motor(3);
 
 // Set to 50% power
 motor.setTargetPercent(50);
@@ -67,8 +67,8 @@ motor.stop();
 
 ```cpp
 // Create a motor group from port numbers
-T_MotorGroup left_side({1, 2, 3});
-T_MotorGroup right_side({4, 5, 6});
+DC_MotorGroup left_side({1, 2, 3});
+DC_MotorGroup right_side({4, 5, 6});
 
 // Apply control to all motors at once
 left_side.setTargetPercent(75);
@@ -82,8 +82,8 @@ right_side.stop();
 ## Documentation Structure
 
 - **[Getting Started](./getting-started.md)**: Introduction and basic usage
-- **[T_Motor API](./t-motor.md)**: Complete T_Motor class reference
-- **[T_MotorGroup API](./t-motor-group.md)**: Complete T_MotorGroup class reference
+- **[DC_Motor API](./dc-motor.md)**: Complete DC_Motor class reference
+- **[DC_MotorGroup API](./dc-motor-group.md)**: Complete DC_MotorGroup class reference
 - **[Utilities](./utilities.md)**: Helper functions, constants, and types
 - **[Common Patterns](./common-patterns.md)**: Real-world usage examples and best practices
 
@@ -91,8 +91,8 @@ right_side.stop();
 
 ### Tank Drive Robot
 ```cpp
-T_MotorGroup left({1, 2, 3});
-T_MotorGroup right({4, 5, 6});
+DC_MotorGroup left({1, 2, 3});
+DC_MotorGroup right({4, 5, 6});
 
 // Arcade drive
 left.setTargetPercent(forward + turn);
@@ -102,7 +102,7 @@ right.setTargetPercent(forward - turn);
 ### Subsystem Architecture
 ```cpp
 class Intake {
-    T_Lib::T_Motor motor;
+    DC_Lib::DC_Motor motor;
     void intake() { motor.setTargetRPM(600); }
     void outtake() { motor.setTargetRPM(-600); }
 };
@@ -114,9 +114,9 @@ class Intake {
 double distance = (encoder_counts / 360.0) * M_PI * Wheel_Size::Trac_4in;
 ```
 
-## Why T_Lib?
+## Why DC_Lib?
 
-| Feature | Standard PROS | T_Lib |
+| Feature | Standard PROS | DC_Lib |
 |---------|---|---|
 | Single Motor Control | ✓ | ✓ Better |
 | PID Tuning | Manual | Dual-speed built-in |
@@ -141,13 +141,13 @@ double distance = (encoder_counts / 360.0) * M_PI * Wheel_Size::Trac_4in;
 
 ## Version Information
 
-- **T_Lib Version**: 0.0.1 (Beta)
+- **DC_Lib Version**: 0.0.1 (Beta)
 - **Target Platform**: VEX Robotics V5 with PROS Kernel
 - **Language Standard**: C++17
 
 ## License & Attribution
 
-T_Lib is provided as-is for VEX Robotics competition and educational use.
+DC_Lib is provided as-is for VEX Robotics competition and educational use.
 
 ---
 
